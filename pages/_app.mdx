@@ -1,25 +1,39 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 
-import { Suspense } from 'react';
+import { Suspense, useEffect } from 'react';
 import '../styles/globals.css';
 import Head from 'next/head';
 import { PHProvider, PostHogPageview } from '@/components/providers';
 
-
 export default function App({ Component, pageProps }) {
 
-  return (
-    <>
-     <Head>
-        <meta charSet="UTF-8" />
-        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-        <title>Avail Developer Docs</title>
-      </Head>
-        <Suspense>
-        <PostHogPageview />
-      </Suspense>
-       <PHProvider>
+    useEffect(() => {
+  const script = document.createElement("script");
+  script.src =
+    "https://docsbot-standalone-git-develop-cookbookdev.vercel.app/docsbot.min.js";
+  script.defer = true;
+  document.head.appendChild(script);
+  return () => {
+    document.head.removeChild(script);
+  };
+}, []);
+  
+
+return (
+
+<>
+<Head>
+<meta charSet="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Avail Developer Docs</title>
+</Head>
+<Suspense>
+<PostHogPageview />
+</Suspense>
+<PHProvider>
+
   <Component {...pageProps} />
+  <div id="__cookbook" data-api-key="eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI2NWVmNjQ4MzI0OTAwMDkyN2MxMWJjNDQiLCJpYXQiOjE3MTAxODc2NTEsImV4cCI6MjAyNTc2MzY1MX0.FUjNryJOMucu7VoqOFP940qFeD7w_5kBEkvTVaP38tA"></div>
    </PHProvider>
   </>
   );
